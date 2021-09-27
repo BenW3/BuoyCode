@@ -1,0 +1,31 @@
+% Channel ID to read data from 
+readChannelID = 1451519; 
+% Latitude Field ID 
+LatitudeID = 2; 
+% Longitude Field ID 
+LongitudeID = 3; 
+   
+% Channel Read API Key   
+% If your channel is private, then enter the read API 
+% Key between the '' below:   
+readAPIKey = 'J8P1ZPV4YO8O3V35'; 
+   
+% Fetch gps data for the last 10 points. Learn more about the THINGSPEAKREAD function by going to 
+% the Documentation tab on the right side pane of this page. 
+Latitude = thingSpeakRead(readChannelID,'Fields',LatitudeID,'NumPoints',10,...
+'ReadKey',readAPIKey); 
+Latitude = Latitude/1e4
+   
+Longitude = thingSpeakRead(readChannelID,'Fields',LongitudeID,...
+'NumPoints',10,'ReadKey',readAPIKey) 
+Longitude = Longitude/1e4
+viewExpansion = 0.005;
+geoscatter(Latitude,Longitude,'red','filled','MarkerEdgeColor','black');
+[latitudeLimits,longitudeLimits] = geolimits;
+latitudeLimits(1) = latitudeLimits(1)-viewExpansion;
+latitudeLimits(2) = latitudeLimits(2)+viewExpansion;
+longitudeLimits(1) = longitudeLimits(1)-viewExpansion;
+longitudeLimits(2) = longitudeLimits(2)+viewExpansion;
+geolimits(latitudeLimits,longitudeLimits);
+
+geobasemap satellite;
